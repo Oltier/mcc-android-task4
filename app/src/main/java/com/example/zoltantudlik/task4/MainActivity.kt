@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         checkPermissions()
 
-        pickPhotoButton.setOnClickListener { v ->
+        pickPhotoButton.setOnClickListener { _ ->
             loadImageFromGallery()
         }
     }
@@ -66,6 +66,9 @@ class MainActivity : AppCompatActivity() {
 
             val faceDetector = FaceDetector(this)
             faceDetector.detectFaces(image)
+
+            val barcodeDetector = BarcodeDetector(this)
+            barcodeDetector.detectBarcode(image)
         }
     }
 
@@ -82,9 +85,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setFaceInfo(faces: Int, isSmiling: Boolean, hasEyes: Boolean) {
-        barCodeTextView.text = getText(R.string.no)
         peopleTextView.text = faces.toString()
         smileTextView.text = if(isSmiling) getText(R.string.yes) else getText(R.string.no)
         eyesTextView.text = if(hasEyes) getText(R.string.yes) else getText(R.string.no)
+    }
+
+    fun setBarcodeInfo(containsBarcode: Boolean) {
+        barCodeTextView.text = if(containsBarcode) getText(R.string.yes) else getText(R.string.no)
     }
 }
