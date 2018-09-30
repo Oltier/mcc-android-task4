@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "649522536013",
+    "firebase_url": "https://ml-kit-mcc.firebaseio.com",
+    "project_id": "ml-kit-mcc",
+    "storage_bucket": "ml-kit-mcc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649522536013:android:7a3ae1571be0f998",
+        "android_client_info": {
+          "package_name": "com.example.zoltantudlik.task4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649522536013-b6smrv4dc17sv407bebflto4ft9fooc4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEg5Dj0mpH_FoxyDZKfQjx6ybdr21RFEI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

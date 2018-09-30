@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MlKitActivity</string>
+    <string name="pick_photo">Pick Photo</string>
+    <string name="barcode">Barcode: </string>
+    <string name="people">People: </string>
+    <string name="features">Facial Features</string>
+    <string name="smile">Smile: </string>
+    <string name="eyes">Eyes: </string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="image_to_analize">Image to analize</string>
+</resources>
