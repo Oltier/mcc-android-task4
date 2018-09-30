@@ -4,15 +4,22 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
+import com.example.zoltantudlik.task4.R.id.image
 
 
 class MainActivity : AppCompatActivity() {
@@ -50,25 +57,36 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImage = data.data
-            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+            val mainActivity = this
+            val requestListener = object : RequestListener<Bitmap> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                    Log.e("MCC", "Error loading bitmap", e)
+                    return false
+                }
 
-            val cursor = contentResolver.query(selectedImage,
-                    filePathColumn, null, null, null)
-            cursor!!.moveToFirst()
+                override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    val faceDetector = FaceDetector(mainActivity)
+                    faceDetector.detectFaces(resource!!)
 
-            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-            val picturePath = cursor.getString(columnIndex)
-            cursor.close()
+                    val barcodeDetector = BarcodeDetector(mainActivity)
+                    barcodeDetector.detectBarcode(resource)
 
-            val image = BitmapFactory.decodeFile(picturePath)
+                    return false
+                }
 
-            imageView.setImageBitmap(image)
+            }
 
-            val faceDetector = FaceDetector(this)
-            faceDetector.detectFaces(image)
 
-            val barcodeDetector = BarcodeDetector(this)
-            barcodeDetector.detectBarcode(image)
+            Glide.with(this)
+                    .load(selectedImage) // Uri of the picture
+                    .into(imageView);
+
+            Glide.with(this)
+                    .asBitmap()
+                    .load(selectedImage)
+                    .apply(RequestOptions().override(800, 600))
+                    .listener(requestListener)
+                    .submit()
         }
     }
 
@@ -79,18 +97,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
+        val intent = Intent()
         intent.type = "image/*"
+        intent.action = Intent.ACTION_PICK
         startActivityForResult(intent, RESULT_LOAD_IMG)
     }
 
     fun setFaceInfo(faces: Int, isSmiling: Boolean, hasEyes: Boolean) {
         peopleTextView.text = faces.toString()
-        smileTextView.text = if(isSmiling) getText(R.string.yes) else getText(R.string.no)
-        eyesTextView.text = if(hasEyes) getText(R.string.yes) else getText(R.string.no)
+        smileTextView.text = if (isSmiling) getText(R.string.yes) else getText(R.string.no)
+        eyesTextView.text = if (hasEyes) getText(R.string.yes) else getText(R.string.no)
     }
 
     fun setBarcodeInfo(containsBarcode: Boolean) {
-        barCodeTextView.text = if(containsBarcode) getText(R.string.yes) else getText(R.string.no)
+        barCodeTextView.text = if (containsBarcode) getText(R.string.yes) else getText(R.string.no)
     }
 }
