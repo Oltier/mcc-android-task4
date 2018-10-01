@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         eyesTextView = findViewById(R.id.txtEyes)
         imageView = findViewById(R.id.imageView)
 
-        checkPermissions()
+//        checkPermissions()
 
         pickPhotoButton.setOnClickListener { _ ->
             loadImageFromGallery()
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadImageFromGallery() {
         val intent = Intent()
         intent.type = "image/*"
-        intent.action = Intent.ACTION_PICK
+        intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(intent, RESULT_LOAD_IMG)
     }
 

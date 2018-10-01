@@ -38,10 +38,12 @@ class FaceDetector(activity: MainActivity) {
                     }
 
                     val smilingAvg = faces
+                            .asSequence()
                             .map { face -> face.smilingProbability }
                             .average()
 
                     val eyesAvg = faces
+                            .asSequence()
                             .map { face -> (face.leftEyeOpenProbability + face.rightEyeOpenProbability) / 2 }
                             .average()
 
